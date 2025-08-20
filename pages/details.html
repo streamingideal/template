@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Producto</title>
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="details.css"> </head>
+<body>
+    <header>
+        <a href="../index.html">Volver a la tienda</a>
+    </header>
+    <main id="product-details">
+        </main>
+    <script src="../script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+
+            if (!productId) {
+                document.getElementById('product-details').innerHTML = '<h2>Producto no encontrado.</h2>';
+                return;
+            }
+
+            try {
+                const response = await fetch(`../products/${productId}.json`);
+                const product = await response.json();
+
+                if (!product) {
+                    document.getElementById('product-details').innerHTML = '<h2>Producto no encontrado.</h2>';
+                    return;
+                }
+
+                // Generar el HTML para mostrar los detalles del producto
+                document.getElementById('product-details').innerHTML = `
+                    <div class="product-info-container">
+                        <div class="product-image-gallery">
+                            <img src="../${product.imagen}" alt="${product.nombre}" class="main-image">
+                            <div class="thumbnail-images">
+                                <img src="../${product.imagen}" alt="Vista principal" class="thumbnail">
+                                ${product.imagenes_adicionales.map(img => `
+                                    <img src="../${img}" alt="${product.nombre} adicional" class="thumbnail">
+                                `).join('')}
+                            </div>
+                        </div>
+                        <div class="product-info">
+                            <h1>${product.nombre}</h1>
+                            <p class="description">${product.descripcion}</p>
+                            <p class="price">$${product.precio.toFixed(2)}</p>
+                            <p class="stock-info ${product.stock === 0 ? 'out-of-stock' : ''}">
+                                ${product.stock > 0 ? `Stock: ${product.stock}` : 'Sin Stock'}
+                            </p>
+                            <button class="add-to-cart-button" ${product.stock === 0 ? 'disabled' : ''}>Añadir al Carrito</button>
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                document.getElementById('product-details').innerHTML = '<h2>Error al cargar el producto.</h2>';
+            }
+        });
+    </script>
+</body>
+</html>
