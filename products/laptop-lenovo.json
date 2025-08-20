@@ -1,0 +1,13 @@
+{
+  "id": "laptop-lenovo",
+  "nombre": "Laptop Lenovo",
+  "categoria": "electronica",
+  "precio": 899.99,
+  "stock": 5,
+  "imagen": "assets/images/laptop-lenovo.jpg",
+  "descripcion": "Una potente laptop ideal para trabajo y estudio.",
+  "imagenes_adicionales": [
+    "assets/images/laptop-lenovo-v1.jpg",
+    "assets/images/laptop-lenovo-v2.jpg"
+  ]
+}
